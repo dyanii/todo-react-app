@@ -20,7 +20,7 @@ class Todo extends React.Component {
             console.log("ReadOnly? ", this.state.readOnly)
         });
     }
-
+    
     editEventHadler = (e) => {
         const thisItem = this.state.item;
         thisItem.title= e.target.value;
