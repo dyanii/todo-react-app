@@ -1,9 +1,9 @@
 import React from "react";
 import Todo from "./Todo";
 import AddTodo from "./AddTodo.js";
-import { Paper, List, Container } from "@material-ui/core";
+import { Paper, List, Container, Grid, Button, AppBar, Toolbar, Typography } from "@material-ui/core";
 import './App.css';
-import { call } from "./service/ApiService";
+import { call, signout } from "./service/ApiService";
 
 class App extends React.Component {
   constructor(props){
@@ -53,12 +53,13 @@ class App extends React.Component {
       </Paper>
     );
 
-
     return (
       <div className="App">
         <Container maxWidth="md">
           <AddTodo add={this.add} />
-          <div className="TodoList">{todoItems}</div>
+          <div className="TodoList">
+            {todoItems}
+          </div>
         </Container>
       </div>
     );
