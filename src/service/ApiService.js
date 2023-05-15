@@ -1,10 +1,18 @@
 import { API_BASE_URL } from "../app-config";
+const ACCESS_TOKEN = "ACCESS_TOKEN";
 
 export function call(api, method, request) {
-    let options = {
-        headers: new Headers( {
+    let headers = new Headers( {
             "Content-Type": "application/json",
-        }),
+        });
+
+    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    if (accessToken && accessToken !== null) {
+        headers.append("Authorization", "Bearer " + accessToken);
+    }
+
+    let options = {
+        headers: headers,
         url: API_BASE_URL + api,
         method: method,
     };
@@ -23,7 +31,7 @@ export function call(api, method, request) {
             }))
         .catch((error) => {
             console.log(error.status);
-            if(WebGLVertexArrayObject.status === 403) {
+            if(error.status === 403) {
                 window.location.href = "/login";
             }
             return Promise.reject(error);
@@ -36,8 +44,17 @@ export function signin(userDTO) {
                 //console.log("response : ", response);
                 //alert("로그인 토큰: " + response.token);
                 if (response.token) {
-                    localStorage.setItem("ACCESS_TOKEN", response.token);
+                    localStorage.setItem(ACCESS_TOKEN, response.token);
                     window.location.href = "/";
         }
     });
+}
+
+export function signout() {
+    localStorage.setItem(ACCESS_TOKEN, null);
+    window.location.href = "/login";
+}
+
+export function signup(userDTO) {
+    return call("/auth/signup", "POST", userDTO);
 }
